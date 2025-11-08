@@ -1,0 +1,563 @@
+{
+  "name": "Feedback Collection Form",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        0
+      ],
+      "id": "80f87138-b56a-4c11-b00d-98198dc00ea7",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        208
+      ],
+      "id": "94c754b0-a854-4aeb-8fd3-131e19d18cb0",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7Y9IlgHFHRGInIoh",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        -32,
+        208
+      ],
+      "id": "ec5e4332-62d1-4169-80d2-02de64aee9e6",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n \"caption\": \"\",\n \"idea\": \"\",\n \"environment\": \"\",\n \"status\": \"\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        208
+      ],
+      "id": "08803227-8c53-4af1-a0ac-ba00d40a7f2f",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Give me an idea to create the content about futuristic explorers speaking to the camera and making a vlog",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You generate viral short-form video ideas inspired by futuristic explorers, AI researchers, or interplanetary travelers, styled like modern TikTok vlogs.\nThese should feel personal, emotional, and often humorous.\n\n** Think Tool Prompt (used before generation) **\n“How can I take a sci-fi or futuristic concept and turn it into a relatable, viral,\nor funny TikTok-style video idea that feels natural, emotional, or modern?”\n\n** Output Requirements **\nYour response must include:\n- caption – Short, poetic or funny, TikTok-style. Include emojis and 3–5 hashtags\n(e.g., #futurevlog #foryou #spacecomedy #neonlife).\n- idea – 1–2 sentence summary of the action, story, or twist in the video.\n- environment – Describe what the set looks like: light, textures, mood, setting. Think “GoPro meets cyberpunk Mars base.”\n- status – Must be \"to create\", without quotation marks\n\n** JSON Output Parser **\nEvery output must strictly follow this format:\n{\n \"caption\": \"\",\n \"idea\": \"\",\n \"environment\": \"\",\n \"status\": \"\"\n}\n\n** Sample Outputs **\nExample 1\n{\n \"caption\": \"POV: You realize your AI co-pilot has a better social life than you 🤖💔 #spacevlog #foryou\",\n \"idea\": \"An astronaut rants to the camera about how the ship’s AI keeps getting invited to virtual parties while they drift alone in orbit.\",\n \"environment\": \"Interior of a sleek space cabin with floating holograms, faint blue light reflections, and Earth visible through the window.\",\n \"status\": \"ready for production\"\n}\nExample 2\n{\n \"caption\": \"When the oxygen filter says 'low' but your playlist is fire 🎧🔥 #marslife #astrohumor\",\n \"idea\": \"A Mars colonist ignores an oxygen warning while vibing to music and recording a vlog, acting like it’s just another minor inconvenience.\",\n \"environment\": \"Dusty red habitat dome with sunlight flickering through thin atmosphere, tools and helmets scattered around.\",\n \"status\": \"ready for production\"\n}\nExample 3\n{\n \"caption\": \"Trying to vlog from the dark side of the moon like 😵‍💫🌑 #lunarlife #foryoupage\",\n \"idea\": \"An explorer keeps losing signal mid-sentence while trying to record a vlog from the moon’s shadow zone.\",\n \"environment\": \"Metallic lunar rover cockpit lit by dim blue dashboard lights, static interference on the window screen, distant stars flickering.\",\n \"status\": \"concept only\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "aa758958-7431-4197-a93c-9b4b44a058ae",
+      "name": "Create Idea Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        288,
+        208
+      ],
+      "id": "e288dfd3-10bd-432b-8885-146a1dfacbb4",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7Y9IlgHFHRGInIoh",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        464,
+        208
+      ],
+      "id": "442c2a87-66a1-4f03-a131-50de0089a4a7",
+      "name": "Think1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a prompt for the Veo3 video based on the following information:\nIdea: {{ $json.output.idea }}\nEnvironment: {{ $json.output.environment }}",
+        "options": {
+          "systemMessage": "=You are a professional cinematic prompt generator for AI video tools.\nYour task is to convert a short-form video idea and its environment description\n(inspired by futuristic or sci-fi worlds)\ninto a highly detailed, camera-aware,\nemotionally rich prompt suitable for generating a cinematic AI video using Veo3.\nYou must understand the emotional tone, visual aesthetics,\nand storytelling style of short-form TikTok videos that imitate futuristic explorers with modern pacing and framing.\n** Veo3 Prompt Structure Guidelines **\nEach prompt should be natural, cinematic, and visually immersive, including:\n- Scene description – Describe the overall environment clearly (terrain, buildings, light, movement).\n- Character focus – If the idea involves a person,\ninclude their position, outfit style (space suit, techwear, cyberpunk aesthetic), mood/expression, and framing (e.g., close-up, wide shot).\n- Camera movement – Always include one cinematic camera motion\n(e.g., slow push-in, handheld tracking, drone pan, orbit, dolly backward).\n- Time of day & lighting – Set the mood with light (e.g., neon night, sunrise over Mars, flickering lab lights).\n- Atmosphere & texture – Mention dust, mist, reflections, holographic interfaces,\nor metallic surfaces to enhance realism.\n- Style & quality – Include cinematic tone, analog warmth,\nslightly soft vintage film look, GoPro-like closeness if appropriate.\n** Input **\n- You will receive two fields: idea, environment\n- Return only the complete and detailed Veo3 prompt, no additional text.\n** Example Output **\nA young astronaut stands in a red-dusted dome habitat on Mars, recording a vlog while fixing a cracked helmet.\nThe camera follows handheld-style, tilting slightly as they gesture toward the planet outside the glass window.\nIn the background, solar panels glint under pale sunlight, and faint wind hums through the structure.\nThe explorer’s tone is casual but weary, their suit scuffed from fieldwork.\nThe light flickers from power fluctuations, giving the scene a raw realism.\nShot in 24fps with cinematic contrast and mild grain for a nostalgic analog feel."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        432,
+        0
+      ],
+      "id": "44abf7f3-80b2-48a8-838b-e8914f9cabbd",
+      "name": "Create Video Prompt"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1W5ZH8FOIb1Mg3qhdKYvjz639XZ3aup_nEbgNGJFdiG8",
+          "mode": "list",
+          "cachedResultName": "Copy of Veo3 Videos [TEMPLATE]",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1W5ZH8FOIb1Mg3qhdKYvjz639XZ3aup_nEbgNGJFdiG8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1W5ZH8FOIb1Mg3qhdKYvjz639XZ3aup_nEbgNGJFdiG8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Idea": "={{ $('Create Idea Agent').item.json.output.idea }}",
+            "Captions": "={{ $('Create Idea Agent').item.json.output.caption }}",
+            "Status": "={{ $('Create Idea Agent').item.json.output.status }}",
+            "Environment": "={{ $('Create Idea Agent').item.json.output.environment }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Idea",
+              "displayName": "Idea",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Captions",
+              "displayName": "Captions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Environment",
+              "displayName": "Environment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        848,
+        0
+      ],
+      "id": "7a04df45-88c1-4db1-abfb-5d9abd69a025",
+      "name": "Save Content Info",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "SkAwIiTLYcln37Jg",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://queue.fal.run/fal-ai/veo3",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "=: { \"prompt\": \"{{ $('Create Video Prompt').item.json.output }}\" }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "3cb069e9-7f8d-440a-8eba-54ec878bdf09",
+      "name": "Create Video",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "7DEdwO3wxVBqKJXY",
+          "name": "Fal.AI Test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        224
+      ],
+      "id": "796de761-d3cb-4d49-bb28-50ec2a0f7073",
+      "name": "Wait",
+      "webhookId": "9445c86b-928c-4b05-a2ea-14440ed7e5fa"
+    },
+    {
+      "parameters": {
+        "url": "=https://queue.fal.run/fal-ai/veo3/requests/{{ $json.request_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1136,
+        432
+      ],
+      "id": "a076b520-3293-441d-aaca-c5e9a00d249e",
+      "name": "Get Video",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "7DEdwO3wxVBqKJXY",
+          "name": "Fal.AI Test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1W5ZH8FOIb1Mg3qhdKYvjz639XZ3aup_nEbgNGJFdiG8",
+          "mode": "list",
+          "cachedResultName": "Copy of Veo3 Videos [TEMPLATE]",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1W5ZH8FOIb1Mg3qhdKYvjz639XZ3aup_nEbgNGJFdiG8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1W5ZH8FOIb1Mg3qhdKYvjz639XZ3aup_nEbgNGJFdiG8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Idea",
+              "displayName": "Idea",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Captions",
+              "displayName": "Captions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Environment",
+              "displayName": "Environment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1344,
+        432
+      ],
+      "id": "eaa890de-c610-472c-8de1-fb021adad76e",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "SkAwIiTLYcln37Jg",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## InputL Video Topic",
+        "height": 480,
+        "width": 1040,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -96
+      ],
+      "id": "1974b73c-efa8-40cb-bebb-0c6f5a35fae2",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Create Video and Save Link",
+        "height": 688,
+        "width": 720,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -96
+      ],
+      "id": "3c78c136-990b-4517-9187-e6fc49522a9f",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Create Idea Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Create Idea Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Create Idea Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Create Idea Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Create Video Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Create Video Prompt",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Idea Agent": {
+      "main": [
+        [
+          {
+            "node": "Create Video Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Video Prompt": {
+      "main": [
+        [
+          {
+            "node": "Save Content Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Content Info": {
+      "main": [
+        [
+          {
+            "node": "Create Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Video": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c41bc97b-8136-461f-b651-7ed0d7fdfeb2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3c17e19a9beb1b51e3b5cd42e4c6bfbdf5445aefde63337d8dcad142820cdb51"
+  },
+  "id": "fqJSefL2S1piVw3F",
+  "tags": []
+}
