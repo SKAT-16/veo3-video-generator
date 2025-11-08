@@ -4,8 +4,10 @@
   <img src="assets/workflow.png" alt="n8n workflow preview" width="1100"/>
   <br/><br/>
   <img src="assets/excel-1.png" alt="Video ideas overview" width="1000"/>
-  <br/>
-  [![Demo](assets/demo.gif)](assets/sample-video.mp4)
+  <br/><br/>
+  <a href="assets/sample-video.mp4">
+    <img src="assets/demo.gif" alt="Video demo" width="700"/>
+  </a>
 </p>
 
 This project is an **AI-powered video content generation system** built entirely within **n8n** using a **no-code** approach.  
