@@ -5,10 +5,7 @@
   <br/><br/>
   <img src="assets/excel-1.png" alt="Video ideas overview" width="1000"/>
   <br/>
-  <video width="1000" controls>
-    <source src="assets/sample-video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  [![Watch the video](https://raw.githubusercontent.com/SKAT-16/veo3-video-generator/main/assets/thumbnail.png)](https://raw.githubusercontent.com/SKAT-16/veo3-video-generator/main/assets/sample-video.mp4)
 </p>
 
 This project is an **AI-powered video content generation system** built entirely within **n8n** using a **no-code** approach.  
